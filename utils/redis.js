@@ -3,9 +3,11 @@ const redis = require('redis');
 const util = require('util');
 const keys = require('../configs/keys')
 
-const client = redis.createClient(keys.REDIS_URI);
+const client = redis.createClient({
+    url: keys.REDIS_URI,
+});
+client.on('error', (err) => console.log('Redis Client Error', err.message));
 client.connect().then(() => {
-    client.hGet = util.promisify(client.hGet);
     console.log('connected to redis');
 })
 
